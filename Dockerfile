@@ -1,20 +1,17 @@
-FROM alpine:latest
+FROM php:7.0.13-fpm-alpine
 
-Maintainer Geshan Manandhar <geshan@gmail.com>
+Maintainer Michiel De Wilde <mich.dewild@gmail.com>
 
-RUN apk --update add wget \ 
-		     curl \
-		     git \
-		     php7 \
-		     php7-curl \
-		     php7-openssl \
-		     php7-iconv \
-		     php7-json \
-		     php7-mbstring \
-		     php7-phar \
-		     php7-dom --repository http://nl.alpinelinux.org/alpine/edge/testing/ && rm /var/cache/apk/*
-
-RUN ln -s /usr/bin/php7 /usr/bin/php
+RUN apk --no-cache add wget \ 
+    curl \
+    git \ 
+    && docker-php-ext-install curl \
+    && docker-php-ext-install openssl \
+    && docker-php-ext-install iconv \
+    && docker-php-ext-install json \
+    && docker-php-ext-install mbstring \
+    && docker-php-ext-install phar \
+    && docker-php-ext-install dom
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer 
 
